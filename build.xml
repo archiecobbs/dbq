@@ -1,0 +1,82 @@
+<!-- $Id$ -->
+
+<project name="dbq" default="build"
+  xmlns:dellroad="urn:org.dellroad.ant"
+  xmlns:antcontrib="urn:net.sf.antcontrib"
+  xmlns:ivy="urn:org.apache.ivy.ant">
+
+    <!-- Import build macros -->
+    <import file="src/build/macros.xml"/>
+
+    <!-- Configure build -->
+    <property name="javac.compiler.flags" value="-Xlint:unchecked"/>
+
+    <target name="javac.classpath" unless="javac.classpath.resolved">
+        <dellroad:ivypath pathid="javac.classpath" conf="javac"/>
+        <property name="javac.classpath.resolved" value="true"/>
+    </target>
+
+    <target name="unittest.classpath" unless="unittest.classpath.resolved">
+        <dellroad:ivypath pathid="runtime.classpath.libs" conf="runtime"/>
+        <path id="unittest.classpath">
+            <path refid="runtime.classpath.libs"/>
+            <pathelement path="src/test"/>
+        </path>
+        <property name="unittest.classpath.resolved" value="true"/>
+    </target>
+
+    <target name="runtime.classpath" unless="runtime.classpath.resolved">
+        <dellroad:ivypath pathid="runtime.classpath" conf="runtime"/>
+        <property name="runtime.classpath.resolved" value="true"/>
+    </target>
+
+    <target name="checkstyle" description="Run checkstyle report"
+      depends="javac.classpath, unittest.classpath, checkstyle.classpath">
+        <dellroad:checkstyle maxWarnings="10" maxErrors="0"/>
+    </target>
+
+    <target name="jar" depends="javac">
+        <mkdir dir="build"/>
+        <jar destfile="build/dbq.jar">
+            <fileset dir="build/classes">
+                <include name="**/*.class"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="dist" depends="runtime.classpath, jar">
+
+        <!-- Make directories -->
+        <mkdir dir="build/dist/usr/bin"/>
+        <mkdir dir="build/dist/usr/share/dbq/libs"/>
+
+        <!-- Copy required JARs -->
+        <copy todir="build/dist/usr/share/dbq" file="build/dbq.jar"/>
+        <mkdir dir="build/dist/usr/share/dbq/libs"/>
+        <dellroad:ivyput pattern="build/dist/usr/share/dbq/libs/[module]-[artifact]-[revision].[ext]" conf="runtime"/>
+
+        <!-- Copy script -->
+        <copy tofile="build/dist/usr/bin/dbq" file="src/scripts/dbq.sh"/>
+
+        <!-- Install stylesheets -->
+        <copy todir="build/dist/usr/share/dbq">
+            <fileset dir="src/xsl"/>
+        </copy>
+
+        <!-- Build tarball -->
+        <tar destfile="build/dbq.tgz" compression="gzip">
+            <tarfileset dir="build/dist" mode="755">
+                <include name="usr/bin/*"/>
+            </tarfileset>
+            <tarfileset dir="build/dist" mode="644">
+                <include name="usr/share/dbq/dbq.jar"/>
+                <include name="usr/share/dbq/*.xsl"/>
+                <include name="usr/share/dbq/libs/*"/>
+            </tarfileset>
+        </tar>
+    </target>
+
+    <target name="build" depends="clean, dist"/>
+
+</project>
+
