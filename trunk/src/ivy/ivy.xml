@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+
+<!-- $Id$ -->
+<ivy-module version="1.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="org.dellroad" module="dbq">
+        <license name="Commercial"/>
+        <description homepage="http://dbq.googlecode.com/">
+            DBQ database query tool
+        </description>
+    </info>
+
+    <configurations>
+        <conf name="base" description="JARs required at both compile and runtime"/>
+        <conf name="javac" extends="base" transitive="false" description="JARs required at compile time"/>
+        <conf name="runtime" extends="base" description="JARs required at execution time"/>
+    </configurations>
+
+    <publications>
+        <artifact/>
+        <artifact name="javadoc" type="javadoc" ext="zip"/>
+    </publications>
+
+    <dependencies>
+        <dependency org="com.oracle" name="ojdbc" rev="10.2.0.5" conf="base->default"/>
+        <dependency org="com.mysql" name="mysql-connector-java" rev="5.1.25" conf="base->default"/>
+        <dependency org="net.sourceforge.opencsv" name="opencsv" rev="2.2" conf="base->default"/>
+        <dependency org="org.dellroad" name="dellroad-stuff" rev="1.0.688" conf="base->core"/>
+        <dependency org="org.slf4j" name="slf4j" rev="1.7.2" conf="base->log4j"/>
+    </dependencies>
+
+</ivy-module>
