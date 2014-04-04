@@ -37,6 +37,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.dellroad.stuff.io.NullModemInputStream;
+import org.dellroad.stuff.io.WriteCallback;
 import org.dellroad.stuff.main.MainClass;
 import org.dellroad.stuff.xml.XMLResultSetWriter;
 
@@ -212,7 +213,7 @@ public class Main extends MainClass {
             xslInput.close();
 
             // Transform result
-            transformer.transform(new StreamSource(new NullModemInputStream(new NullModemInputStream.WriteCallback() {
+            transformer.transform(new StreamSource(new NullModemInputStream(new WriteCallback() {
                 @Override
                 public void writeTo(OutputStream output) throws IOException {
                     try {
