@@ -39,7 +39,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.dellroad.stuff.io.NullModemInputStream;
 import org.dellroad.stuff.io.WriteCallback;
 import org.dellroad.stuff.main.MainClass;
-import org.dellroad.stuff.xml.XMLResultSetWriter;
+import org.dellroad.stuff.sql.XMLResultSetWriter;
 
 public class Main extends MainClass {
 
