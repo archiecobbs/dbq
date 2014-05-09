@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Get path separators, etc
-case `uname -o` in
+case `uname -o 2>/dev/null` in
     Cygwin)
         PATH_SEP=';'
         TRANSFORM="sed -r -e s|:|;C:\\\\cygwin|g -e s|/|\\\\|g"
