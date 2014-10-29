@@ -40,8 +40,12 @@ import org.dellroad.stuff.io.NullModemInputStream;
 import org.dellroad.stuff.io.WriteCallback;
 import org.dellroad.stuff.main.MainClass;
 import org.dellroad.stuff.sql.XMLResultSetWriter;
+import org.dellroad.stuff.xml.TransformErrorListener;
+import org.slf4j.LoggerFactory;
 
 public class Main extends MainClass {
+
+    private static final String SAXON_TRANSFORMER_FACTORY_CLASS_NAME = "net.sf.saxon.TransformerFactoryImpl";
 
     private static final int OUTPUT_XML = 0;
     private static final int OUTPUT_CSV = 1;
@@ -206,9 +210,21 @@ public class Main extends MainClass {
             if (this.xsltFile == null || !this.xsltFile.exists())
                 throw new RuntimeException("can't find XSLT transform file: " + this.xsltFile);
 
+            // Get TransformerFactory; prefer Saxon if found
+            TransformerFactory transformerFactory = null;
+            boolean isXalan = false;
+            try {
+                transformerFactory = TransformerFactory.newInstance(
+                  SAXON_TRANSFORMER_FACTORY_CLASS_NAME, Thread.currentThread().getContextClassLoader());
+            } catch (Exception e) {
+                transformerFactory = TransformerFactory.newInstance();
+                isXalan = true;
+            }
+            transformerFactory.setErrorListener(new TransformErrorListener(LoggerFactory.getLogger(this.getClass()), isXalan));
+
             // Create transformer
-            InputStream xslInput = new BufferedInputStream(new FileInputStream(this.xsltFile));
-            Transformer transformer = TransformerFactory.newInstance().newTransformer(
+            final InputStream xslInput = new BufferedInputStream(new FileInputStream(this.xsltFile));
+            final Transformer transformer = transformerFactory.newTransformer(
               new StreamSource(xslInput, xsltFile.toURI().toString()));
             xslInput.close();
 
@@ -246,7 +262,6 @@ public class Main extends MainClass {
 
     @Override
     protected void usageMessage() {
-        System.err.println("Usage:");
         System.err.println("Usage: dbq [options] --driver driver --url URL [query...]");
         System.err.println("Options:");
         System.err.println("  -c, --colnames    Use column names as XML element names");
@@ -254,8 +269,8 @@ public class Main extends MainClass {
         System.err.println("  -d, --driver      Specify driver class name (or one of " + DRIVER_CLASSES.keySet() + ")");
         System.err.println("  -f, --file        Read SQL query from specified file instead of stdin");
         System.err.println("  -H, --html        Output result set as HTML");
-        System.err.println("  -p, --password    Specify database password");
-        System.err.println("  -u, --username    Specify database username");
+        System.err.println("  -p, --pass        Specify database password");
+        System.err.println("  -u, --user        Specify database username");
         System.err.println("  -U, --url         Specify JDBC database URL");
         System.err.println("  -x, --xsl         Apply specified XSLT to result set");
         System.err.println("SQL query is read from stdin if not specified on the command line");
