@@ -24,12 +24,12 @@
     </publications>
 
     <dependencies>
-        <dependency org="com.oracle" name="ojdbc" rev="10.2.0.5" conf="base->default"/>
-        <dependency org="com.mysql" name="mysql-connector-java" rev="5.1.31" conf="base->default"/>
+        <dependency org="com.oracle" name="ojdbc" rev="12.2.0.1" conf="base->default"/>
+        <dependency org="com.mysql" name="mysql-connector-java" rev="6.0.6" conf="base->default"/>
         <dependency org="net.sourceforge.jtds" name="jtds" rev="1.2.6" conf="base->default"/>
         <dependency org="net.sourceforge.opencsv" name="opencsv" rev="2.2" conf="base->default"/>
         <dependency org="org.dellroad" name="dellroad-stuff" rev="1.0.925" conf="base->core"/>
-        <dependency org="org.slf4j" name="slf4j" rev="1.7.2" conf="base->log4j"/>
+        <dependency org="org.slf4j" name="slf4j" rev="1.7.36" conf="base->default"/>
     </dependencies>
 
 </ivy-module>
