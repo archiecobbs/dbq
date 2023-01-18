@@ -54,9 +54,9 @@ public class Main extends MainClass {
     private static final HashMap<String, String> DRIVER_CLASSES = new HashMap<String, String>();
     static {
         DRIVER_CLASSES.put("mssql", "net.sourceforge.jtds.jdbc.Driver");
-        DRIVER_CLASSES.put("mysql", "com.mysql.jdbc.Driver");
+        DRIVER_CLASSES.put("mysql", "com.mysql.cj.jdbc.Driver");
         DRIVER_CLASSES.put("odbc", "sun.jdbc.odbc.JdbcOdbcDriver");
-        DRIVER_CLASSES.put("oracle", "oracle.jdbc.driver.OracleDriver");
+        DRIVER_CLASSES.put("oracle", "oracle.jdbc.OracleDriver");
     }
 
     private static final int BUFFER_SIZE = 1000;

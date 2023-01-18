@@ -29,7 +29,7 @@
         <dependency org="net.sourceforge.jtds" name="jtds" rev="1.2.6" conf="base->default"/>
         <dependency org="net.sourceforge.opencsv" name="opencsv" rev="2.2" conf="base->default"/>
         <dependency org="org.dellroad" name="dellroad-stuff" rev="1.0.925" conf="base->core"/>
-        <dependency org="org.slf4j" name="slf4j" rev="1.7.36" conf="base->default"/>
+        <dependency org="org.slf4j" name="slf4j" rev="1.7.36" conf="base->reload4j"/>
     </dependencies>
 
 </ivy-module>
