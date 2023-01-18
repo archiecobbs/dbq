@@ -41,6 +41,9 @@
             <fileset dir="build/classes">
                 <include name="**/*.class"/>
             </fileset>
+            <fileset dir="src/log4j">
+                <include name="*.xml"/>
+            </fileset>
         </jar>
     </target>
 
